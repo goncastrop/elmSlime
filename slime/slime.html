@@ -1,0 +1,275 @@
+<!DOCTYPE HTML>
+<html><head><meta charset="UTF-8"><title>Main</title><script type="text/javascript" src="/home/gon/.cabal/share/Elm-0.8.0.2/elm-runtime.js"></script><script type="text/javascript">
+Elm.Main = function(elm){
+  var N = Elm.Native, _N = N.Utils(elm), _L = N.List(elm), _E = N.Error(elm), _str = N.JavaScript(elm).toString;
+  var $op = {};
+  var _ = Elm.Text(elm); var Text = _; var hiding={link:1, color:1, height:1}; for(var k in _){if(k in hiding)continue;eval('var '+k+'=_["'+k+'"]')}
+  var _ = Elm.Prelude(elm); var Prelude = _; var hiding={}; for(var k in _){if(k in hiding)continue;eval('var '+k+'=_["'+k+'"]')}
+  var _ = Elm.Signal(elm); var Signal = _; var hiding={}; for(var k in _){if(k in hiding)continue;eval('var '+k+'=_["'+k+'"]')}
+  var _ = Elm.List(elm); var List = _; var hiding={}; for(var k in _){if(k in hiding)continue;eval('var '+k+'=_["'+k+'"]')}
+  var _ = Elm.Maybe(elm); var Maybe = _; var hiding={}; for(var k in _){if(k in hiding)continue;eval('var '+k+'=_["'+k+'"]')}
+  var _ = Elm.Time(elm); var Time = _; var hiding={}; for(var k in _){if(k in hiding)continue;eval('var '+k+'=_["'+k+'"]')}
+  var _ = Elm.Graphics.Element(elm); var Graphics = Graphics||{};Graphics.Element = _; var hiding={}; for(var k in _){if(k in hiding)continue;eval('var '+k+'=_["'+k+'"]')}
+  var _ = Elm.Color(elm); var Color = _; var hiding={}; for(var k in _){if(k in hiding)continue;eval('var '+k+'=_["'+k+'"]')}
+  var _ = Elm.Graphics.Collage(elm); var Graphics = Graphics||{};Graphics.Collage = _; var hiding={}; for(var k in _){if(k in hiding)continue;eval('var '+k+'=_["'+k+'"]')}
+  var _ = Elm.Keyboard(elm); var Keyboard = _;
+  var _ = Elm.Window(elm); var Window = _;
+  var Play_9 = {ctor:"Play"};
+  var Pause_10 = {ctor:"Pause"};
+  var BetweenGames_11 = {ctor:"BetweenGames"};
+  var Input_0 = F6(function(space_55, dirLX_56, dirLY_57, dirRX_58, dirRY_59, delta_60){
+    return {
+      _:{
+      },
+      delta:delta_60,
+      dirLX:dirLX_56,
+      dirLY:dirLY_57,
+      dirRX:dirRX_58,
+      dirRY:dirRY_59,
+      space:space_55};});
+  var player_20 = function(x_73){
+    return {
+      _:{
+      },
+      score:0,
+      vx:0,
+      vy:0,
+      x:x_73,
+      y:bottom_19};};
+  var near_23 = F3(function(k_74, c_75, n_76){
+    return ((_N.cmp(n_76,(k_74-c_75)).ctor!=='LT')&&(_N.cmp(n_76,(k_74+c_75)).ctor!=='GT'));});
+  var within_24 = F4(function(ball_77, p_78, w_79, h_80){
+    return (A3(near_23, p_78.x, w_79, ball_77.x)&&A3(near_23, p_78.y, h_80, ball_77.y));});
+  var norma2_25 = F2(function(x_81, y_82){
+    return sqrt((Math.pow(x_81,2)+Math.pow(y_82,2)));});
+  var within2_26 = F2(function(b_83, p_84){
+    return (_N.cmp(A2(norma2_25, (p_84.x-b_83.x), (p_84.y-b_83.y)),(ballR_15+playerRad_16)).ctor==='LT');});
+  var calcAngle_27 = F2(function(b_85, p_86){
+    return A2(atan2, (b_85.y-p_86.y), (b_85.x-p_86.x));});
+  var calcAngleNet_28 = function(b_87){
+    return (((_N.cmp(b_87.y,(bottom_19+netHeight_12)).ctor!=='GT')&&(A3(near_23, 0, ((netWidth_13/2)+ballR_15), b_87.x)&&(_N.cmp(b_87.x,0).ctor==='LT'))) ? pi : (((_N.cmp(b_87.y,(bottom_19+netHeight_12)).ctor!=='GT')&&(A3(near_23, 0, ((netWidth_13/2)+ballR_15), b_87.x)&&(_N.cmp(b_87.x,0).ctor==='GT'))) ? 0 : (pi/2)));};
+  var stepV_29 = F2(function(b_88, alfa_89){
+    return function(){
+      var beta_90 = A2(calcAngle_27, {
+        _:{
+        },
+        x:(0-b_88.vx),
+        y:(0-b_88.vy)}, {
+        _:{
+        },
+        x:0,
+        y:0});
+      var gamma_91 = ((_N.cmp(abs((alfa_89-beta_90)),(pi/2)).ctor!=='GT')?((2*alfa_89)-beta_90):((alfa_89+(beta_90-pi))/2));
+      return _N.replace([['vx',(maxV_18*cos(gamma_91))],['vy',(maxV_18*sin(gamma_91))]], b_88);}();});
+  var stepV2_30 = F2(function(b_92, alfa_93){
+    return _N.replace([['vx',(maxV_18*cos(alfa_93))],['vy',(maxV_18*sin(alfa_93))]], b_92);});
+  var stepVWall_31 = function(b_94){
+    return ((_N.cmp((b_94.x+ballR_15),halfWidth_7).ctor!=='LT') ? _N.replace([['vx',(0-abs(b_94.vx))]], b_94) : ((_N.cmp((b_94.x-ballR_15),(0-halfWidth_7)).ctor!=='GT') ? _N.replace([['vx',abs(b_94.vx)]], b_94) : b_94));};
+  var bounce_32 = F3(function(b_95, p1_96, p2_97){
+    return (A2(within2_26, b_95, p1_96) ? A2(stepV2_30, b_95, A2(calcAngle_27, b_95, p1_96)) : (A2(within2_26, b_95, p2_97) ? A2(stepV2_30, b_95, A2(calcAngle_27, b_95, p2_97)) : (A4(within_24, b_95, net_22, ((netWidth_13/2)+ballR_15), ((netHeight_12/2)+ballR_15)) ? A2(stepV2_30, b_95, calcAngleNet_28(b_95)) : (not(A3(near_23, 0, (halfWidth_7-ballR_15), b_95.x)) ? stepVWall_31(b_95) : b_95))));});
+  var gravity_33 = F2(function(t_98, m_99){
+    return ((_N.cmp(m_99.y,bottom_19).ctor==='GT')?_N.replace([['vy',(m_99.vy-(t_98*800))]], m_99):m_99);});
+  var move2_34 = F2(function(t_100, m_101){
+    return _N.replace([['x',(m_101.x+(t_100*m_101.vx))],['y',A2(max, bottom_19, (m_101.y+(t_100*m_101.vy)))]], m_101);});
+  var walk_35 = F2(function(_83000_102, m_103){
+    return function(){
+      var x_104 = _83000_102.x;
+      return _N.replace([['vx',(x_104*200)]], m_103);}();});
+  var jump_36 = F2(function(_85000_105, m_106){
+    return function(){
+      var y_107 = _85000_105.y;
+      return (((_N.cmp(y_107,0).ctor==='GT')&&_N.eq(m_106.y,bottom_19))?_N.replace([['vy',350]], m_106):m_106);}();});
+  var updatePoints_37 = F2(function(point_108, m_109){
+    return _N.replace([['score',(m_109.score+point_108)]], m_109);});
+  var restrictPl_38 = F3(function(p_110, x1_111, x2_112){
+    return _N.replace([['x',A3(clamp, x1_111, x2_112, p_110.x)]], p_110);});
+  var stepBall2_39 = function(t_113){
+    return function(x){
+      return A2(move2_34, t_113, A2(gravity_33, t_113, x));};};
+  var stepPlyer_40 = F3(function(t_114, dir_115, points_116){
+    return function(x){
+      return A2(move2_34, t_114, A2(walk_35, dir_115, A2(gravity_33, t_114, A2(jump_36, dir_115, x))));};});
+  var stepBall_41 = F4(function(t_117, ball_118, p1_119, p2_120){
+    return (((_N.cmp(ball_118.y,bottom_19).ctor!=='GT')&&(_N.cmp(ball_118.x,0).ctor==='LT')) ? _N.replace([['x',(halfWidth_7/2)],['y',0],['vx',0],['vy',0]], ball_118) : (((_N.cmp(ball_118.y,bottom_19).ctor!=='GT')&&(_N.cmp(ball_118.x,0).ctor==='GT')) ? _N.replace([['x',(0-(halfWidth_7/2))],['y',50],['vx',0],['vy',0]], ball_118) : A2(stepBall2_39, t_117, A3(bounce_32, ball_118, p1_119, p2_120))));});
+  var stepGame_42 = F2(function(_113000_121, game_122){
+    return function(){
+      var space_123 = _113000_121.space;
+      var dirLX_124 = _113000_121.dirLX;
+      var dirLY_125 = _113000_121.dirLY;
+      var dirRX_126 = _113000_121.dirRX;
+      var dirRY_127 = _113000_121.dirRY;
+      var delta_128 = _113000_121.delta;
+      return function(){
+        var _100000_129 = game_122;
+        var state_130 = _100000_129.state;
+        var ball_131 = _100000_129.ball;
+        var playerL_132 = _100000_129.playerL;
+        var playerR_133 = _100000_129.playerR;
+        var scoreL_134 = (((_N.cmp(ball_131.x,0).ctor==='GT')&&(_N.cmp(ball_131.y,bottom_19).ctor!=='GT'))?1:0);
+        var scoreR_135 = (((_N.cmp(ball_131.x,0).ctor==='LT')&&(_N.cmp(ball_131.y,bottom_19).ctor!=='GT'))?1:0);
+        return _N.replace([['state',(space_123 ? Play_9 : ((_N.eq((scoreL_134+playerL_132.score),10)||_N.eq((scoreR_135+playerR_133.score),10)) ? BetweenGames_11 : state_130))],['ball',((_N.eq(state_130,Pause_10)||_N.eq(state_130,BetweenGames_11))?ball_131:A4(stepBall_41, delta_128, ball_131, playerL_132, playerR_133))],['playerL',((space_123&&_N.eq(state_130,BetweenGames_11)) ? player_20((0-(halfWidth_7/2))) : ((scoreL_134||scoreR_135) ? A2(updatePoints_37, scoreL_134, _N.replace([['x',(0-(halfWidth_7/2))],['y',bottom_19]], playerL_132)) : A3(restrictPl_38, A4(stepPlyer_40, delta_128, {
+          _:{
+          },
+          x:dirLX_124,
+          y:dirLY_125}, scoreL_134, playerL_132), (playerRad_16-halfWidth_7), (0-playerRad_16))))],['playerR',((space_123&&_N.eq(state_130,BetweenGames_11)) ? player_20((halfWidth_7/2)) : ((scoreL_134||scoreR_135) ? A2(updatePoints_37, scoreR_135, _N.replace([['x',(halfWidth_7/2)],['y',bottom_19]], playerR_133)) : A3(restrictPl_38, A4(stepPlyer_40, delta_128, {
+          _:{
+          },
+          x:dirRX_126,
+          y:dirRY_127}, scoreR_135, playerR_133), playerRad_16, (halfWidth_7-playerRad_16))))]], game_122);}();}();});
+  var txt_46 = function(f_136){
+    return function(x){
+      return text(f_136(monospace(A2(Text.color, textGreen_45, toText(x)))));};};
+  var make_50 = F3(function(obj_137, col_138, shape_139){
+    return A2(move, {ctor:"Tuple2", _0:obj_137.x, _1:obj_137.y}, A2(filled, col_138, shape_139));});
+  var eye_52 = function(angle_140){
+    return A2(rotate, angle_140, eyeForm_51);};
+  var display_53 = F2(function(_152001_141, _152000_142){
+    return function(){ 
+    switch (_152001_141.ctor) {
+      case 'Tuple2':
+        return function(){
+          var state_145 = _152000_142.state;
+          var ball_146 = _152000_142.ball;
+          var playerL_147 = _152000_142.playerL;
+          var playerR_148 = _152000_142.playerR;
+          return function(){
+            var scores_149 = A2(txt_46, Text.height(4), _L.append(show(playerL_147.score),_L.append(_str('  '),show(playerR_148.score))));
+            var delt_150 = ((playerRad_16-eyeRad_17)*cos(degrees(45)));
+            var eyeL_151 = {
+              _:{
+              },
+              x:(playerL_147.x+delt_150),
+              y:(playerL_147.y+delt_150)};
+            var eyeR_152 = {
+              _:{
+              },
+              x:(playerR_148.x-delt_150),
+              y:(playerR_148.y+delt_150)};
+            return A4(container, _152001_141._0, _152001_141._1, middle, A3(collage, round(gameWidth_4), round(gameHeight_5), _L.Cons(A2(filled, slimeGreen_44, A2(rect, gameWidth_4, gameHeight_5)),_L.Cons(A3(make_50, net_22, white, A2(rect, netWidth_13, netHeight_12)),_L.Cons(A3(make_50, ball_146, white, circle(ballR_15)),_L.Cons(A3(make_50, playerL_147, yellow, circle(playerRad_16)),_L.Cons(A3(make_50, playerR_148, red, circle(playerRad_16)),_L.Cons(A2(move, {ctor:"Tuple2", _0:eyeL_151.x, _1:eyeL_151.y}, eye_52(A2(calcAngle_27, ball_146, eyeL_151))),_L.Cons(A2(move, {ctor:"Tuple2", _0:eyeR_152.x, _1:eyeR_152.y}, eye_52(A2(calcAngle_27, ball_146, eyeR_152))),_L.Cons(A3(make_50, {
+              _:{
+              },
+              x:0,
+              y:((playerRad_16/2)-(gameHeight_5/2))}, blue, A2(rect, gameWidth_4, ((gameHeight_5/2)+bottom_19))),_L.Cons(A2(move, {ctor:"Tuple2", _0:0, _1:((gameHeight_5/2)-40)}, toForm(scores_149)),_L.Cons(A2(move, {ctor:"Tuple2", _0:0, _1:(80+bottom_19)}, toForm((_N.eq(state_145,Play_9) ? A2(spacer, 1, 1) : ((_N.eq(state_145,BetweenGames_11)&&_N.eq(playerL_147.score,10)) ? A2(txt_46, id, msg2_48) : ((_N.eq(state_145,BetweenGames_11)&&_N.eq(playerR_148.score,10)) ? A2(txt_46, id, msg3_49) : A2(txt_46, id, msg_47)))))),_L.Nil))))))))))));}();}();
+    }_E.Case('Line 133, Column 3') }();});
+  var delta_1 = A2(lift,inSeconds,fps(50));
+  var input_2 = A2(sampleOn, delta_1, A3(lift2,F2(function(f,x){return f(x)}),A3(lift2,F2(function(f,x){return f(x)}),A3(lift2,F2(function(f,x){return f(x)}),A3(lift2,F2(function(f,x){return f(x)}),A3(lift2,F2(function(f,x){return f(x)}),A2(lift,Input_0,Keyboard.space),A2(lift, function(__61){
+    return __61.x;}, Keyboard.wasd)),A2(lift, function(__62){
+    return __62.y;}, Keyboard.wasd)),A2(lift, function(__63){
+    return __63.x;}, Keyboard.arrows)),A2(lift, function(__64){
+    return __64.y;}, Keyboard.arrows)),delta_1));
+  var _20000_3 = {ctor:"Tuple2", _0:700, _1:400};
+  var gameWidth_4 = function(){ 
+  switch (_20000_3.ctor) {
+    case 'Tuple2':
+      return _20000_3._0;
+  }_E.Case('Line 20, Column 27') }();
+  var gameHeight_5 = function(){ 
+  switch (_20000_3.ctor) {
+    case 'Tuple2':
+      return _20000_3._1;
+  }_E.Case('Line 20, Column 27') }();
+  var _21000_6 = {ctor:"Tuple2", _0:(gameWidth_4/2), _1:(gameHeight_5/2)};
+  var halfWidth_7 = function(){ 
+  switch (_21000_6.ctor) {
+    case 'Tuple2':
+      return _21000_6._0;
+  }_E.Case('Line 21, Column 27') }();
+  var halfHeight_8 = function(){ 
+  switch (_21000_6.ctor) {
+    case 'Tuple2':
+      return _21000_6._1;
+  }_E.Case('Line 21, Column 27') }();
+  var netHeight_12 = 40;
+  var netWidth_13 = 5;
+  var ballInitPos_14 = {ctor:"Tuple2", _0:(halfWidth_7/2), _1:0};
+  var ballR_15 = 10;
+  var playerRad_16 = 35;
+  var eyeRad_17 = 8;
+  var maxV_18 = 600;
+  var bottom_19 = (playerRad_16-(gameHeight_5/2));
+  var defaultGame_21 = {
+    _:{
+    },
+    ball:{
+    _:{
+    },
+    vx:0,
+    vy:0,
+    x:(0-(halfWidth_7/2)),
+    y:0},
+    playerL:player_20((0-(halfWidth_7/2))),
+    playerR:player_20((halfWidth_7/2)),
+    state:Pause_10};
+  var net_22 = {
+    _:{
+    },
+    x:0,
+    y:(bottom_19+(netHeight_12/2))};
+  var gameState_43 = A3(foldp, stepGame_42, defaultGame_21, input_2);
+  var slimeGreen_44 = A3(rgb, 60, 100, 60);
+  var textGreen_45 = A3(rgb, 160, 200, 160);
+  var msg_47 = _str('Slime water volleyball! SPACE to start, AWSD and &larr;&uarr;&darr;&rarr; to move');
+  var msg2_48 = _str('Yellow player wins! Press space to start a new game');
+  var msg3_49 = _str('Red player wins! Press space to start a new game');
+  var eyeForm_51 = group(_L.Cons(A2(filled, white, circle(eyeRad_17)),_L.Cons(A2(move, {ctor:"Tuple2", _0:(eyeRad_17/2), _1:0}, A2(filled, black, circle((eyeRad_17/2)))),_L.Nil)));
+  var main_54 = A3(lift2, display_53, Window.dimensions, gameState_43);
+  elm.Native = elm.Native||{};
+  var _ = elm.Native.Main||{};
+  _.$op = {};
+  _.Input = Input_0;
+  _.delta = delta_1;
+  _.input = input_2;
+  _._20000 = _20000_3;
+  _.gameWidth = gameWidth_4;
+  _.gameHeight = gameHeight_5;
+  _._21000 = _21000_6;
+  _.halfWidth = halfWidth_7;
+  _.halfHeight = halfHeight_8;
+  _.Play = Play_9;
+  _.Pause = Pause_10;
+  _.BetweenGames = BetweenGames_11;
+  _.netHeight = netHeight_12;
+  _.netWidth = netWidth_13;
+  _.ballInitPos = ballInitPos_14;
+  _.ballR = ballR_15;
+  _.playerRad = playerRad_16;
+  _.eyeRad = eyeRad_17;
+  _.maxV = maxV_18;
+  _.bottom = bottom_19;
+  _.player = player_20;
+  _.defaultGame = defaultGame_21;
+  _.net = net_22;
+  _.near = near_23;
+  _.within = within_24;
+  _.norma2 = norma2_25;
+  _.within2 = within2_26;
+  _.calcAngle = calcAngle_27;
+  _.calcAngleNet = calcAngleNet_28;
+  _.stepV = stepV_29;
+  _.stepV2 = stepV2_30;
+  _.stepVWall = stepVWall_31;
+  _.bounce = bounce_32;
+  _.gravity = gravity_33;
+  _.move2 = move2_34;
+  _.walk = walk_35;
+  _.jump = jump_36;
+  _.updatePoints = updatePoints_37;
+  _.restrictPl = restrictPl_38;
+  _.stepBall2 = stepBall2_39;
+  _.stepPlyer = stepPlyer_40;
+  _.stepBall = stepBall_41;
+  _.stepGame = stepGame_42;
+  _.gameState = gameState_43;
+  _.slimeGreen = slimeGreen_44;
+  _.textGreen = textGreen_45;
+  _.txt = txt_46;
+  _.msg = msg_47;
+  _.msg2 = msg2_48;
+  _.msg3 = msg3_49;
+  _.make = make_50;
+  _.eyeForm = eyeForm_51;
+  _.eye = eye_52;
+  _.display = display_53;
+  _.main = main_54
+  return elm.Main = _;
+  };</script></head><body><script type="text/javascript">Elm.fullscreen(Elm.Main)</script><noscript><p>Slime water volleyball! SPACE to start, AWSD and &larr;&uarr;&darr;&rarr; to move</p><p>Yellow player wins! Press space to start a new game</p><p>Red player wins! Press space to start a new game</p><p>  </p></noscript></body></html>
