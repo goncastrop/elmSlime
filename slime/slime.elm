@@ -89,7 +89,7 @@ restrictPl p x1 x2 = { p | x <- clamp x1 x2 p.x }
 
 stepBall2 t = move2 t . gravity t
 
-stepPlyer t dir points = move2 t . walk dir . gravity t . jump dir
+stepPlyer t dir = move2 t . walk dir . gravity t . jump dir
 
 stepBall t ball p1 p2 =
  if | ball.y <= bottom && ball.x < 0 -> { ball | x <- halfWidth/2, y <- 0 , vx <- 0, vy <- 0 }
@@ -107,10 +107,10 @@ stepGame {space,dirLX,dirLY,dirRX,dirRY,delta} game =
                             stepBall delta ball playerL playerR
            , playerL <- if | space && state == BetweenGames -> player (0-halfWidth/2)
                            | scoreL || scoreR -> updatePoints scoreL { playerL | x <- 0-halfWidth/2, y <- bottom}
-                           | otherwise  ->  restrictPl (stepPlyer delta {x=dirLX,y=dirLY} scoreL playerL) (playerRad-halfWidth) (0-playerRad)
+                           | otherwise  ->  restrictPl (stepPlyer delta {x=dirLX,y=dirLY} playerL) (playerRad-halfWidth) (0-playerRad)
            , playerR <- if | space && state == BetweenGames -> player (halfWidth/2)
                            | scoreL || scoreR -> updatePoints scoreR { playerR | x <- halfWidth/2, y <- bottom}
-                           | otherwise  ->  restrictPl (stepPlyer delta {x=dirRX,y=dirRY} scoreR playerR) (playerRad) (halfWidth-playerRad)}
+                           | otherwise  ->  restrictPl (stepPlyer delta {x=dirRX,y=dirRY} playerR) (playerRad) (halfWidth-playerRad)}
 
 gameState = foldp stepGame defaultGame input
 
