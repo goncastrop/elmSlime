@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html><head><meta charset="UTF-8"><title>Main</title><script type="text/javascript" src="/home/gon/.cabal/share/Elm-0.8.0.2/elm-runtime.js"></script><script type="text/javascript">
+<html><head><meta charset="UTF-8"><title>Main</title><script type="text/javascript" src="C:\Users\Gonza\AppData\Roaming\cabal\Elm-0.8.0.3\elm-runtime.js"></script><script type="text/javascript">
 Elm.Main = function(elm){
   var N = Elm.Native, _N = N.Utils(elm), _L = N.List(elm), _E = N.Error(elm), _str = N.JavaScript(elm).toString;
   var $op = {};
@@ -59,14 +59,14 @@ Elm.Main = function(elm){
         },
         x:0,
         y:0});
-      var gamma_91 = ((_N.cmp(abs((alfa_89-beta_90)),(pi/2)).ctor!=='GT')?((2*alfa_89)-beta_90):((alfa_89+(beta_90-pi))/2));
+      var gamma_91 = ((_N.cmp(abs((alfa_89-beta_90)),(pi/2)).ctor!=='GT')?((2*alfa_89)-beta_90):(beta_90-pi));
       return _N.replace([['vx',(maxV_18*cos(gamma_91))],['vy',(maxV_18*sin(gamma_91))]], b_88);}();});
   var stepV2_30 = F2(function(b_92, alfa_93){
     return _N.replace([['vx',(maxV_18*cos(alfa_93))],['vy',(maxV_18*sin(alfa_93))]], b_92);});
   var stepVWall_31 = function(b_94){
     return ((_N.cmp((b_94.x+ballR_15),halfWidth_7).ctor!=='LT') ? _N.replace([['vx',(0-abs(b_94.vx))]], b_94) : ((_N.cmp((b_94.x-ballR_15),(0-halfWidth_7)).ctor!=='GT') ? _N.replace([['vx',abs(b_94.vx)]], b_94) : b_94));};
   var bounce_32 = F3(function(b_95, p1_96, p2_97){
-    return (A2(within2_26, b_95, p1_96) ? A2(stepV2_30, b_95, A2(calcAngle_27, b_95, p1_96)) : (A2(within2_26, b_95, p2_97) ? A2(stepV2_30, b_95, A2(calcAngle_27, b_95, p2_97)) : (A4(within_24, b_95, net_22, ((netWidth_13/2)+ballR_15), ((netHeight_12/2)+ballR_15)) ? A2(stepV2_30, b_95, calcAngleNet_28(b_95)) : (not(A3(near_23, 0, (halfWidth_7-ballR_15), b_95.x)) ? stepVWall_31(b_95) : b_95))));});
+    return (A2(within2_26, b_95, p1_96) ? A2(stepV_29, b_95, A2(calcAngle_27, b_95, p1_96)) : (A2(within2_26, b_95, p2_97) ? A2(stepV_29, b_95, A2(calcAngle_27, b_95, p2_97)) : (A4(within_24, b_95, net_22, ((netWidth_13/2)+ballR_15), ((netHeight_12/2)+ballR_15)) ? A2(stepV_29, b_95, calcAngleNet_28(b_95)) : (not(A3(near_23, 0, (halfWidth_7-ballR_15), b_95.x)) ? stepVWall_31(b_95) : b_95))));});
   var gravity_33 = F2(function(t_98, m_99){
     return ((_N.cmp(m_99.y,bottom_19).ctor==='GT')?_N.replace([['vy',(m_99.vy-(t_98*800))]], m_99):m_99);});
   var move2_34 = F2(function(t_100, m_101){

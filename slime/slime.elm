@@ -62,7 +62,7 @@ calcAngleNet b =
 -- funcion alternativa de paso de velocidad, fisica mas real pero tiene fallas
 stepV b alfa = 
   let beta = calcAngle {x=(0-b.vx),y=(0-b.vy)} {x=0,y=0}
-      gamma = if abs (alfa-beta) <= pi/2 then 2*alfa - beta else (alfa + (beta - pi))/2
+      gamma = if abs (alfa-beta) <= pi/2 then 2*alfa - beta else beta-pi
   in { b | vx <- maxV*(cos gamma), vy <- maxV*(sin gamma) }
 
 stepV2 b alfa = { b | vx <- maxV*(cos alfa), vy <- maxV*(sin alfa) }
@@ -72,9 +72,9 @@ stepVWall b = if | b.x+ballR >= halfWidth   -> {b | vx <- 0 - abs b.vx }
               | otherwise                -> b
 
 bounce b p1 p2 = 
-  if | within2 b p1                                        -> stepV2 b (calcAngle b p1)
-     | within2 b p2                                        -> stepV2 b (calcAngle b p2)
-     | within b net (netWidth/2+ballR) (netHeight/2+ballR) -> stepV2 b (calcAngleNet b)
+  if | within2 b p1                                        -> stepV b (calcAngle b p1)
+     | within2 b p2                                        -> stepV b (calcAngle b p2)
+     | within b net (netWidth/2+ballR) (netHeight/2+ballR) -> stepV b (calcAngleNet b)
      | not (near 0 (halfWidth-ballR) b.x)                  -> stepVWall b
      | otherwise                                           -> b
      
